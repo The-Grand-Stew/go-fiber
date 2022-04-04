@@ -1,11 +1,28 @@
 package utils
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
+
 	"github.com/gofiber/fiber/v2"
 )
+
+// ConnectionURLBuilder func for building URL connection.
+func ConnectionURLBuilder() string {
+	// Define URL to connection.
+	var url string
+
+	// URL for Fiber connection.
+	url = fmt.Sprintf(
+		"%s:%s",
+		os.Getenv("SERVER_HOST"),
+		os.Getenv("SERVER_PORT"),
+	)
+
+	return url
+}
 
 // StartServerWithGracefulShutdown function for starting server with a graceful shutdown.
 func StartServerWithGracefulShutdown(a *fiber.App) {
@@ -27,7 +44,7 @@ func StartServerWithGracefulShutdown(a *fiber.App) {
 	}()
 
 	// Build Fiber connection URL.
-	fiberConnURL, _ := ConnectionURLBuilder("fiber")
+	fiberConnURL := ConnectionURLBuilder()
 
 	// Run server.
 	if err := a.Listen(fiberConnURL); err != nil {
@@ -40,7 +57,7 @@ func StartServerWithGracefulShutdown(a *fiber.App) {
 // StartServer func for starting a simple server.
 func StartServer(a *fiber.App) {
 	// Build Fiber connection URL.
-	fiberConnURL, _ := ConnectionURLBuilder("fiber")
+	fiberConnURL := ConnectionURLBuilder()
 
 	// Run server.
 	if err := a.Listen(fiberConnURL); err != nil {
